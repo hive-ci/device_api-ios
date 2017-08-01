@@ -9,7 +9,6 @@ require 'device_api/ios/idevicename'
 
 module DeviceAPI
   module IOS
-
     # Returns an array of connected iOS devices
     def self.devices
       devs = IDevice.devices
@@ -21,7 +20,7 @@ module DeviceAPI
     # Retrieve a Device object by serial ID
     def self.device(qualifier)
       if qualifier.to_s.empty?
-        raise DeviceAPI::BadSerialString.new("Serial was '#{ qualifier.nil? ? 'nil' : qualifier }'")
+        raise DeviceAPI::BadSerialString, "Serial was '#{qualifier.nil? ? 'nil' : qualifier}'"
       end
       DeviceAPI::IOS::Device.new(qualifier: qualifier, state: 'device')
     end

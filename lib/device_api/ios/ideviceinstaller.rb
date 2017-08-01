@@ -39,13 +39,13 @@ module DeviceAPI
           command = "ideviceinstaller -u '#{serial}' -U '#{package}'"
         end
 
-        raise IDeviceInstallerError.new('No action specified') if command.nil?
+        raise IDeviceInstallerError, 'No action specified' if command.nil?
 
         result = execute(command)
 
-        raise IDeviceInstallerError.new(result.stderr) if result.exit != 0
+        raise IDeviceInstallerError, result.stderr if result.exit != 0
 
-        lines = result.stdout.split("\n").map { |line| line.gsub('-', '').strip }
+        lines = result.stdout.split("\n").map { |line| line.delete('-').strip }
 
         return true if lines.last.match('Complete')
         false
@@ -57,7 +57,7 @@ module DeviceAPI
       def self.list_installed_packages(serial)
         result = execute("ideviceinstaller -u '#{serial}' -l")
 
-        raise IDeviceInstallerError.new(result.stderr) if result.exit != 0
+        raise IDeviceInstallerError, result.stderr if result.exit != 0
 
         lines = result.stdout.split("\n")
         lines.shift
@@ -82,7 +82,7 @@ module DeviceAPI
         installed_packages = list_installed_packages(serial)
 
         matches = installed_packages.select { |_, values| values[:package_name] == package }
-        return !matches.empty?
+        !matches.empty?
       end
     end
 

@@ -9,7 +9,7 @@ uk.co.bbc.titan.IPAddress - IPAddress 1
 uk.co.bbc.iplayer - BBC iPlayer 4.10.0.196
 end
       allow(Open3).to receive(:capture3) do
-        [output, '', (Struct.new(:exitstatus)).new(0)]
+        [output, '', Struct.new(:exitstatus).new(0)]
       end
       apps = DeviceAPI::IOS::IDeviceInstaller.list_installed_packages('123456')
       expect(apps.count).to eq(2)
@@ -35,9 +35,9 @@ Installing 'uk.co.mediaat.iplayer'
  - Complete
 end
       allow(Open3).to receive(:capture3) do
-        [output, '', (Struct.new(:exitstatus)).new(0)]
+        [output, '', Struct.new(:exitstatus).new(0)]
       end
-      result = DeviceAPI::IOS::IDeviceInstaller.install_ipa(serial: '123456', ipa: 'iplayer.ipa' )
+      result = DeviceAPI::IOS::IDeviceInstaller.install_ipa(serial: '123456', ipa: 'iplayer.ipa')
       expect(result).to eq(true)
     end
   end
@@ -51,7 +51,7 @@ Uninstalling 'uk.co.bbc.iplayer'
  - Complete
 end
       allow(Open3).to receive(:capture3) do
-        [output, '', (Struct.new(:exitstatus)).new(0)]
+        [output, '', Struct.new(:exitstatus).new(0)]
       end
       result = DeviceAPI::IOS::IDeviceInstaller.uninstall_package(package: 'uk.co.bbc.iplayer', serial: '123456')
       expect(result).to eq(true)
@@ -65,7 +65,7 @@ Uninstalling 'uk.co.bbc.iplaye'
  - Error occurred: APIInternalError
 end
       allow(Open3).to receive(:capture3) do
-        [output, '', (Struct.new(:exitstatus)).new(0)]
+        [output, '', Struct.new(:exitstatus).new(0)]
       end
       result = DeviceAPI::IOS::IDeviceInstaller.uninstall_package(package: 'uk.co.bbc.iplaye', serial: '123456')
       expect(result).to eq(false)
@@ -80,7 +80,7 @@ uk.co.bbc.titan.IPAddress - IPAddress 1
 uk.co.bbc.iplayer - BBC iPlayer 4.10.0.196
 end
       allow(Open3).to receive(:capture3) do
-        [output, '', (Struct.new(:exitstatus)).new(0)]
+        [output, '', Struct.new(:exitstatus).new(0)]
       end
     end
 

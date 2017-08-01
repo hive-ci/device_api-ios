@@ -2,10 +2,8 @@ require 'device_api/execution'
 require 'device_api/ios/ipaddress'
 
 RSpec.describe DeviceAPI::IOS::IPAddress do
-
   describe '.address' do
     it 'gets the correct IP Address' do
-
       apps = <<end
 Total: 2 apps\r
 uk.co.bbc.titan.IPAddress - IPAddress 1\r
@@ -24,8 +22,8 @@ end
   2015-07-06 09:27:33.672 IPAddress[801:299377] 10.10.1.80
 end
       allow(Open3).to receive(:capture3).and_return(
-                [apps, '', (Struct.new(:exitstatus)).new(0)],
-                [output, '', (Struct.new(:exitstatus)).new(0)]
+        [apps, '', Struct.new(:exitstatus).new(0)],
+        [output, '', Struct.new(:exitstatus).new(0)]
       )
 
       ip_address = DeviceAPI::IOS::IPAddress.address('123456')

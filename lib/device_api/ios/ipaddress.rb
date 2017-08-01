@@ -7,7 +7,6 @@ module DeviceAPI
   module IOS
     # Namespace for all methods encapsulating idevice calls
     class IPAddress < Execution
-
       # Package name for the IP Address app
       def self.ipaddress_bundle_id
         'uk.co.bbc.titan.IPAddress'
@@ -17,8 +16,11 @@ module DeviceAPI
       # @param [String] serial serial of the target device
       # @return [Boolean] returns true if the app is installed
       def self.installed?(serial)
-        if DeviceAPI::IOS::IDeviceInstaller.package_installed?( serial: serial, package: ipaddress_bundle_id )
-          return true
+        if DeviceAPI::IOS::IDeviceInstaller.package_installed?(
+          serial: serial,
+          package: ipaddress_bundle_id
+        )
+          true
         else
           warn IPAddressError.new('IP Address package not installed: Please see https://github.com/bbc/ios-test-helper')
         end
@@ -29,7 +31,7 @@ module DeviceAPI
       # @return [String] IP Address if found
       def self.address(serial)
         return nil unless installed?(serial)
-        result = IDeviceDebug.run(serial: serial, bundle_id: ipaddress_bundle_id )
+        result = IDeviceDebug.run(serial: serial, bundle_id: ipaddress_bundle_id)
 
         ip_address = nil
         result.each do |line|

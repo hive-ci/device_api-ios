@@ -10,7 +10,7 @@ module DeviceAPI
       def self.list_profiles(serial)
         result = execute("ideviceprovision -u #{serial} list")
 
-        raise IDeviceProvisionError.new(result.stderr) if result.exit != 0
+        raise IDeviceProvisionError, result.stderr if result.exit != 0
 
         Hash[result.stdout.split("\n").map { |a| b = a.split(' - '); [b[0], b[1]] }[1..-1]]
       end
@@ -22,8 +22,8 @@ module DeviceAPI
       # @option options [String] :serial serial of the device to check
       # @return [Boolean] true if the profile is installed, false otherwise
       def self.has_profile?(options = {})
-        name = options[:name]
-        uuid = options[:uuid]
+        name   = options[:name]
+        uuid   = options[:uuid]
         serial = options[:serial]
 
         profiles = list_profiles(serial)
@@ -44,7 +44,7 @@ module DeviceAPI
 
         result = execute("ideviceprovision -u #{serial} remove #{uuid}")
 
-        raise IDeviceProvisionError.new(result.stderr) if result.exit != 0
+        raise IDeviceProvisionError, result.stderr if result.exit != 0
         true
       end
 
@@ -55,7 +55,7 @@ module DeviceAPI
       # @return [Boolean, IDeviceProvisionError] true if the profile is installed, an error otherwise
       def self.install_profile(options = {})
         serial = options[:serial]
-        file = options[:file]
+        file   = options[:file]
 
         info = get_profile_info(file)
 
@@ -64,7 +64,7 @@ module DeviceAPI
 
         result = execute("ideviceprovision -u #{serial} install #{file}")
 
-        raise IDeviceProvisionError.new(result.stderr) if result.exit != 0
+        raise IDeviceProvisionError, result.stderr if result.exit != 0
         true
       end
 
@@ -74,7 +74,7 @@ module DeviceAPI
       def self.get_profile_info(file)
         result = execute("ideviceprovision dump #{file}")
 
-        raise IDeviceProvisionError.new(result.stderr) if result.exit != 0
+        raise IDeviceProvisionError, result.stderr if result.exit != 0
 
         lines = result.stdout.split("\n")
 

@@ -6,15 +6,14 @@ module DeviceAPI
   module IOS
     # Namespace for all methods encapsulating idevice calls
     class IDevice < Execution
-
       # Returns an array of hashes representing connected devices
       # @return (Array) Hash containing serial and device name
       def self.devices
         result = execute_with_timeout_and_retry('idevice_id -l')
 
-        raise IDeviceCommandError.new(result.stderr) if result.exit != 0
+        raise IDeviceCommandError, result.stderr if result.exit != 0
 
-        lines = result.stdout.split("\n")
+        lines   = result.stdout.split("\n")
         results = {}
 
         lines.each do |ln|
@@ -32,7 +31,7 @@ module DeviceAPI
         result = execute("ideviceinfo -u '#{device_id}'")
 
         lines = result.stdout.split("\n")
-        result.exit == 0 and lines.length > 0 and not lines[0].match('Usage')
+        result.exit.zero? && !lines.empty? && !lines[0].match('Usage')
       end
 
       # Returns a Hash containing properties of the specified device using idevice_id.
@@ -41,7 +40,7 @@ module DeviceAPI
       def self.get_props(device_id)
         result = execute("ideviceinfo -u '#{device_id}'")
 
-        raise IDeviceCommandError.new(result.stderr) if result.exit != 0
+        raise IDeviceCommandError, result.stderr if result.exit != 0
 
         result = result.stdout
         props = {}
@@ -50,7 +49,7 @@ module DeviceAPI
           prop_list.each do |line|
             matches = line.scan(/(.*): (.*)/)
             prop_name, prop_value = matches[0]
-            props[prop_name.strip] = prop_value.strip
+            props[prop_name.strip.to_sym] = prop_value.strip
           end
         end
 
@@ -64,6 +63,5 @@ module DeviceAPI
         super(msg)
       end
     end
-
   end
 end

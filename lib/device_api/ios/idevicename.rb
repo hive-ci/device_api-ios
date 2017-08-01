@@ -4,7 +4,6 @@ module DeviceAPI
   module IOS
     # Namespace for all methods encapsulating idevicename calls
     class IDeviceName < Execution
-
       # Returns the device name based on the provided UUID
       # @param device_id uuid of the device
       # @return device name if device is connected
