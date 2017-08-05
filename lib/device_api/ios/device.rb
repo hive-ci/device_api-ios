@@ -57,22 +57,34 @@ module DeviceAPI
         get_prop(:DeviceClass)
       end
 
+      # Return the device platform
+      # @return (String) platform type
+      def architecture
+        get_prop(:CPUArchitecture)
+      end
+
+      # Return the device colour
+      # @return (String) hex colour value
+      def devices_colour
+        get_prop(:DeviceColor)
+      end
+
       # Capture screenshot on device
       def screenshot(args = {})
         args[:device_id] = serial
         IDeviceScreenshot.capture(args)
       end
 
-      # Get the IMEI number of the device
-      # @return (String) IMEI number of current device
-      def imei
-        get_prop(:InternationalMobileEquipmentIdentity)
-      end
-
       # Has the 'Trust this device' dialog been accepted?
       # @return (Boolean) true if the device is trusted, otherwise false
       def trusted?
         IDevice.trusted?(serial)
+      end
+
+      # Check if the device is password protected
+      # @return (Boolean) true if the device is password protected
+      def password_protected?
+        get_prop(:PasswordProtected) == 'true'
       end
 
       # Get the IP Address from the device
@@ -112,7 +124,7 @@ module DeviceAPI
       # Return whether or not the device is a tablet or mobile
       # @return [Symbol] :tablet or :mobile depending on device_class
       def type
-        device_class.downcase.casecmp('ipad').zero? ? :tablet : :mobile
+        device_class.casecmp('ipad').zero? ? :tablet : :mobile
       end
 
       def list_installed_packages
@@ -148,20 +160,44 @@ module DeviceAPI
 
       # Network
 
+      # Get the IMEI number of the device
+      # @return (String) IMEI number of current device
+      def imei
+        get_prop(:InternationalMobileEquipmentIdentity)
+      end
+
       def mobileNetwork
         get_prop(:CFBundleIdentifier)[10..-1]
       end
 
+      # Get mobile bumber
+      # @return (String) mobile number
       def mobileNumber
         get_prop(:PhoneNumber).delete(' ')
       end
 
+      # Get country code
+      # @return (String) country code
       def countryCode
         get_prop(:PhoneNumber)[1..3].strip
       end
 
-      def password_protected?
-        get_prop(:PasswordProtected) == 'true'
+      # Check if device supports telephone
+      # @return (Boolean) is telephone supported
+      def telephone_supported?
+        get_prop(:TelephonyCapability) == 'true'
+      end
+
+      # Check if sim card is supported
+      # @return (Boolean) simcard supported
+      def simcard_supported?
+        get_prop(:SIMStatus) == 'kCTSIMSupportSIMStatusReady'
+      end
+
+      # Check if sim card is available
+      # @return (Boolean) simcard available
+      def simcard_available?
+        get_prop(:SIMTrayStatus) != 'kCTSIMSupportSIMTrayInsertedNoSIM'
       end
 
       # Battery
