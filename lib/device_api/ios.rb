@@ -9,6 +9,7 @@ require 'device_api/ios/idevicename'
 
 # Load plugins
 require 'device_api/ios/plugins/battery'
+require 'device_api/ios/plugins/disk'
 
 module DeviceAPI
   module IOS
