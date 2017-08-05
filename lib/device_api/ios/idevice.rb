@@ -37,23 +37,54 @@ module DeviceAPI
       # Returns a Hash containing properties of the specified device using idevice_id.
       # @param device_id uuid of the device
       # @return (Hash) key value pair of properties
-      def self.get_props(device_id)
-        result = execute("ideviceinfo -u '#{device_id}'")
+      def self.get_props(device_id, type = nil)
+        type_info = deviceinfo_type(type)
+        result = execute("ideviceinfo -u '#{device_id}' #{type_info}")
 
         raise IDeviceCommandError, result.stderr if result.exit != 0
 
         result = result.stdout
-        props = {}
+        props  = {}
         unless result.start_with?('Usage:')
           prop_list = result.split("\n")
           prop_list.each do |line|
-            matches = line.scan(/(.*): (.*)/)
-            prop_name, prop_value = matches[0]
-            props[prop_name.strip.to_sym] = prop_value.strip
+            line.scan(/(.*): (.*)/).map do |(key, value)|
+              props[key.strip.to_sym] = value.strip
+            end
           end
         end
 
         props
+      end
+
+      private
+
+      def self.deviceinfo_type(app)
+        return if app.nil?
+
+        app_type = case app
+                   when :apps
+                     'com.apple.mobile.iTunes'
+                   when :battery
+                     'com.apple.mobile.battery'
+                   when :developer
+                     'developerdomain'
+                   when :disk
+                     'com.apple.disk_usage.factory'
+                   when :icloud
+                     'com.apple.mobile.data_sync'
+                   when :mobile
+                     'com.apple.mobile.internal'
+                   when :restriction
+                     'com.apple.mobile.restriction'
+                   when :software_behavior
+                     'com.apple.mobile.software_behavior'
+                   when :sync_data
+                     'com.apple.mobile.sync_data_class'
+                   when :wireless
+                     'com.apple.mobile.wireless_lockdown'
+                   end
+        "-q #{app_type}"
       end
     end
 

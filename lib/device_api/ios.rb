@@ -7,13 +7,18 @@ require 'device_api/ios/ipaddress'
 require 'device_api/ios/ideviceprovision'
 require 'device_api/ios/idevicename'
 
+# Load plugins
+require 'device_api/ios/plugins/battery'
+
 module DeviceAPI
   module IOS
     # Returns an array of connected iOS devices
     def self.devices
       devs = IDevice.devices
       devs.keys.map do |serial|
-        DeviceAPI::IOS::Device.new(qualifier: serial, display: devs[serial], state: 'ok')
+        DeviceAPI::IOS::Device.new(qualifier: serial,
+                                   display: devs[serial],
+                                   state: 'ok')
       end
     end
 

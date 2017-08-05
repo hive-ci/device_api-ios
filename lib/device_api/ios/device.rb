@@ -160,8 +160,14 @@ module DeviceAPI
         get_prop(:PhoneNumber)[1..3].strip
       end
 
-      def is_password?
+      def password_protected?
         get_prop(:PasswordProtected) == 'true'
+      end
+
+      # Battery
+
+      def battery_info
+        get_battery_info
       end
 
       private
@@ -169,6 +175,11 @@ module DeviceAPI
       def get_prop(key)
         @props = IDevice.get_props(serial) if !@props || !@props[key]
         @props[key]
+      end
+
+      def get_battery_info
+        @battery = DeviceAPI::IOS::Plugin::Battery.new(qualifier: qualifier) unless @battery
+        @battery
       end
 
       def install_ipa(ipa)
