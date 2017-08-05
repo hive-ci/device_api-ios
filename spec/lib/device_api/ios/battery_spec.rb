@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'device_api/ios'
 
 RSpec.describe DeviceAPI::IOS::Plugin::Battery do
@@ -14,7 +15,7 @@ RSpec.describe DeviceAPI::IOS::Plugin::Battery do
 
     it 'validate battery infomation' do
       allow(Open3).to receive(:capture3) do
-        [output, '', Struct.new(:exitstatus).new(0)]
+        [output, '', STATUS_ZERO]
       end
 
       battery = DeviceAPI::IOS::Device.create(qualifier: '12345').battery_info

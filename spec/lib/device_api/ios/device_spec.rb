@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'device_api/ios/device'
 
 RSpec.describe DeviceAPI::IOS::Device do

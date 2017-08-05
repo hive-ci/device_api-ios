@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'device_api/execution'
 require 'device_api/ios/ipaddress'
 
@@ -22,8 +23,8 @@ end
   2015-07-06 09:27:33.672 IPAddress[801:299377] 10.10.1.80
 end
       allow(Open3).to receive(:capture3).and_return(
-        [apps, '', Struct.new(:exitstatus).new(0)],
-        [output, '', Struct.new(:exitstatus).new(0)]
+        [apps, '', STATUS_ZERO],
+        [output, '', STATUS_ZERO]
       )
 
       ip_address = DeviceAPI::IOS::IPAddress.address('123456')

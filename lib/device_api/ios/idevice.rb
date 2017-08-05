@@ -39,7 +39,7 @@ module DeviceAPI
       # @return (Hash) key value pair of properties
       def self.get_props(device_id, type = nil)
         type_info = deviceinfo_type(type)
-        result = execute("ideviceinfo -u '#{device_id}' #{type_info}")
+        result = execute("ideviceinfo -u '#{device_id}'#{type_info}")
 
         raise IDeviceCommandError, result.stderr if result.exit != 0
 
@@ -84,7 +84,7 @@ module DeviceAPI
                    when :wireless
                      'com.apple.mobile.wireless_lockdown'
                    end
-        "-q #{app_type}"
+        " -q #{app_type}"
       end
     end
 

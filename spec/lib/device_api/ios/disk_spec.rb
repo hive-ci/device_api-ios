@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'device_api/ios'
 
 RSpec.describe DeviceAPI::IOS::Plugin::Disk do
@@ -23,7 +24,7 @@ RSpec.describe DeviceAPI::IOS::Plugin::Disk do
 
     it 'validate disk infomation' do
       allow(Open3).to receive(:capture3) do
-        [output, '', Struct.new(:exitstatus).new(0)]
+        [output, '', STATUS_ZERO]
       end
 
       disk = DeviceAPI::IOS::Device.create(qualifier: '12345').disk_info

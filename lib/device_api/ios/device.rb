@@ -203,12 +203,12 @@ module DeviceAPI
       # Battery
 
       def battery_info
-        get_battery_info
+        DeviceAPI::IOS::Plugin::Battery.new(qualifier: qualifier)
       end
 
       # Disk
       def disk_info
-        get_disk_info
+        DeviceAPI::IOS::Plugin::Disk.new(qualifier: qualifier)
       end
 
       private
@@ -216,16 +216,6 @@ module DeviceAPI
       def get_prop(key)
         @props = IDevice.get_props(serial) if !@props || !@props[key]
         @props[key]
-      end
-
-      def get_battery_info
-        @battery = DeviceAPI::IOS::Plugin::Battery.new(qualifier: qualifier) unless @battery
-        @battery
-      end
-
-      def get_disk_info
-        @disk = DeviceAPI::IOS::Plugin::Disk.new(qualifier: qualifier) unless @disk
-        @disk
       end
 
       def install_ipa(ipa)
