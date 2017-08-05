@@ -206,6 +206,11 @@ module DeviceAPI
         get_battery_info
       end
 
+      # Disk
+      def disk_info
+        get_disk_info
+      end
+
       private
 
       def get_prop(key)
@@ -216,6 +221,11 @@ module DeviceAPI
       def get_battery_info
         @battery = DeviceAPI::IOS::Plugin::Battery.new(qualifier: qualifier) unless @battery
         @battery
+      end
+
+      def get_disk_info
+        @disk = DeviceAPI::IOS::Plugin::Disk.new(qualifier: qualifier) unless @disk
+        @disk
       end
 
       def install_ipa(ipa)
