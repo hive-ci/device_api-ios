@@ -1,5 +1,9 @@
 source 'https://rubygems.org'
 
-gemspec
+group :development do
+  gem 'rubocop-rspec'
+  gem 'simplecov'
+  gem 'overcommit'
+end
 
-gem 'overcommit', group: :development, require: nil
+gemspec

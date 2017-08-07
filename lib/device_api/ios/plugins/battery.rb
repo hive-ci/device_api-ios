@@ -25,9 +25,9 @@ module DeviceAPI
 
         private
 
-        def bool(text)
-          text.to_s.casecmp('true').zero?
-        end
+          def bool(text)
+            text.to_s.casecmp('true').zero?
+          end
       end
     end
   end
