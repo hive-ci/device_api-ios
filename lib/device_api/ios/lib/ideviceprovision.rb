@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # DeviceAPI - an interface to allow for automation of devices
 module DeviceAPI
   # iOS component of DeviceAPI
@@ -12,7 +14,15 @@ module DeviceAPI
 
         raise IDeviceProvisionError, result.stderr if result.exit != 0
 
-        Hash[result.stdout.split("\n").map { |a| b = a.split(' - '); [b[0], b[1]] }[1..-1]]
+        lines   = result.stdout.split("\n")
+        results = {}
+
+        lines.each do |line|
+          next unless /.* - .*/ =~ line
+          key, value = line.split(' - ').map(&:to_s).map(&:strip)
+          results[key] = value
+        end
+        results
       end
 
       # Checks to see if a profile is installed on the specified device
@@ -37,7 +47,7 @@ module DeviceAPI
       # @option options [String] :serial serial of the device to remove the profile from
       # @return [Boolean, IDeviceProvisionError] true if the profile is removed from the device, an error otherwise
       def self.remove_profile(options = {})
-        uuid = options[:uuid]
+        uuid   = options[:uuid]
         serial = options[:serial]
 
         return true unless has_profile?(serial: serial, uuid: uuid)
