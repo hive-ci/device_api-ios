@@ -59,33 +59,33 @@ module DeviceAPI
 
       private
 
-      def self.deviceinfo_type(app)
-        return if app.nil?
+        def self.deviceinfo_type(app)
+          return if app.nil?
 
-        app_type = case app
-                   when :apps
-                     'com.apple.mobile.iTunes'
-                   when :battery
-                     'com.apple.mobile.battery'
-                   when :developer
-                     'developerdomain'
-                   when :disk
-                     'com.apple.disk_usage.factory'
-                   when :icloud
-                     'com.apple.mobile.data_sync'
-                   when :mobile
-                     'com.apple.mobile.internal'
-                   when :restriction
-                     'com.apple.mobile.restriction'
-                   when :software_behavior
-                     'com.apple.mobile.software_behavior'
-                   when :sync_data
-                     'com.apple.mobile.sync_data_class'
-                   when :wireless
-                     'com.apple.mobile.wireless_lockdown'
-                   end
-        " -q #{app_type}"
-      end
+          app_type = case app
+                     when :apps
+                       'com.apple.mobile.iTunes'
+                     when :battery
+                       'com.apple.mobile.battery'
+                     when :developer
+                       'developerdomain'
+                     when :disk
+                       'com.apple.disk_usage.factory'
+                     when :icloud
+                       'com.apple.mobile.data_sync'
+                     when :mobile
+                       'com.apple.mobile.internal'
+                     when :restriction
+                       'com.apple.mobile.restriction'
+                     when :software_behavior
+                       'com.apple.mobile.software_behavior'
+                     when :sync_data
+                       'com.apple.mobile.sync_data_class'
+                     when :wireless
+                       'com.apple.mobile.wireless_lockdown'
+          end
+          " -q #{app_type}"
+        end
     end
 
     # Exception class to handle exceptions related to IDevice Class
