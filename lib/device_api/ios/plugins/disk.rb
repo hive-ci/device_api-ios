@@ -32,17 +32,17 @@ module DeviceAPI
 
         private
 
-        def file_size(number)
-          {
-            'B'  => 1024,
-            'KB' => 1024 * 1024,
-            'MB' => 1024 * 1024 * 1024,
-            'GB' => 1024 * 1024 * 1024 * 1024,
-            'TB' => 1024 * 1024 * 1024 * 1024 * 1024
-          }.each_pair do |e, s|
-            return "#{(number.to_i.to_f / (s / 1024)).round(2)}#{e}" if number.to_i < s
+          def file_size(number)
+            {
+              'B'  => 1024,
+              'KB' => 1024 * 1024,
+              'MB' => 1024 * 1024 * 1024,
+              'GB' => 1024 * 1024 * 1024 * 1024,
+              'TB' => 1024 * 1024 * 1024 * 1024 * 1024
+            }.each_pair do |e, s|
+              return "#{(number.to_i.to_f / (s / 1024)).round(2)}#{e}" if number.to_i < s
+            end
           end
-        end
       end
     end
   end

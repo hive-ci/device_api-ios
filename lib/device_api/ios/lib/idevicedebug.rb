@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # DeviceAPI - an interface to allow for automation of devices
 module DeviceAPI
   # iOS component of DeviceAPI
@@ -13,15 +15,17 @@ module DeviceAPI
       # @option options [Integer] :timeout Number of seconds before the debug session should be killed
       # @return [Hash] Returns the stdout of the debug session
       def self.run(options = {})
-        serial = options[:serial]
+        serial    = options[:serial]
         bundle_id = options[:bundle_id]
-        timeout = options[:timeout] || 10
+        timeout   = options[:timeout] || 10
 
-        result = execute("doalarm () { perl -e 'alarm shift; exec @ARGV' \"$@\"; }; doalarm #{timeout} idevicedebug -u #{serial} -d run #{bundle_id}")
+        timeout_command = "doalarm () { perl -e 'alarm shift; exec @ARGV' \"$@\"; }; doalarm #{timeout}"
+
+        result = execute("#{timeout_command} idevicedebug -u #{serial} -d run #{bundle_id}")
 
         raise IDeviceDebugError, result.stderr unless [0, 255, 142].include?(result.exit)
 
-        result.stdout.split("\r\n")
+        result.stdout.split("\n").map(&:strip)
       end
     end
 

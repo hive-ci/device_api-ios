@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 require 'yaml'
 require 'device_api/ios/device'
-require 'device_api/ios/idevice'
-require 'device_api/ios/ideviceinstaller'
-require 'device_api/ios/idevicedebug'
-require 'device_api/ios/ipaddress'
-require 'device_api/ios/ideviceprovision'
-require 'device_api/ios/idevicename'
+require 'device_api/ios/lib/idevice'
+require 'device_api/ios/lib/ideviceinstaller'
+require 'device_api/ios/lib/idevicedebug'
+require 'device_api/ios/lib/ipaddress'
+require 'device_api/ios/lib/ideviceprovision'
+require 'device_api/ios/lib/idevicename'
 
 # Load plugins
 require 'device_api/ios/plugins/battery'
@@ -26,9 +28,15 @@ module DeviceAPI
     # Retrieve a Device object by serial ID
     def self.device(qualifier)
       if qualifier.to_s.empty?
-        raise DeviceAPI::BadSerialString, "Serial was '#{qualifier.nil? ? 'nil' : qualifier}'"
+        raise DeviceAPI::BadSerialString, 'Serial ID not provided'
       end
       DeviceAPI::IOS::Device.new(qualifier: qualifier, state: 'device')
+    end
+  end
+  # Serial error class
+  class BadSerialString < StandardError
+    def initialize(msg)
+      super(msg)
     end
   end
 end

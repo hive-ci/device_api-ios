@@ -1,23 +1,25 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 require 'device_api/ios'
 
 RSpec.describe DeviceAPI::IOS::Plugin::Battery do
   describe 'Battery info' do
-    output = <<-EOF
-      BatteryCurrentCapacity: 70
-      BatteryIsCharging: true
-      ExternalChargeCapable: true
-      ExternalConnected: true
-      FullyCharged: false
-      GasGaugeCapability: true
-      HasBattery: true
-    EOF
+    before do
+      output = <<-EOF
+        BatteryCurrentCapacity: 70
+        BatteryIsCharging: true
+        ExternalChargeCapable: true
+        ExternalConnected: true
+        FullyCharged: false
+        GasGaugeCapability: true
+        HasBattery: true
+      EOF
+
+      allow(Open3).to receive(:capture3) { [output, '', STATUS_ZERO] }
+    end
 
     it 'validate battery infomation' do
-      allow(Open3).to receive(:capture3) do
-        [output, '', STATUS_ZERO]
-      end
-
       battery = DeviceAPI::IOS::Device.create(qualifier: '12345').battery_info
 
       expect(battery.level).to eq(70)
