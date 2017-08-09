@@ -1,9 +1,9 @@
 require 'device_api/device'
 require 'device_api/ios/device'
-require 'device_api/ios/idevice'
-require 'device_api/ios/idevicename'
-require 'device_api/ios/idevicescreenshot'
-require 'device_api/ios/idevicediagnostics'
+require 'device_api/ios/lib/idevice'
+require 'device_api/ios/lib/idevicename'
+require 'device_api/ios/lib/idevicescreenshot'
+require 'device_api/ios/lib/idevicediagnostics'
 require 'ios/devices'
 
 # DeviceAPI - an interface to allow for automation of devices
@@ -39,6 +39,13 @@ module DeviceAPI
         IDeviceName.name(serial)
       end
 
+      # Set device name
+      # @param (String) new device name
+      # @return (String) device name
+      def set_device_name(name)
+        IDeviceName.set_name(serial, name)
+      end
+
       # Look up device model using the ios-devices gem - changing 'iPad4,7' to 'iPad mini 3'
       # @return (String) human readable model and version (where applicable)
       def model
@@ -65,7 +72,7 @@ module DeviceAPI
 
       # Return the device colour
       # @return (String) hex colour value
-      def devices_colour
+      def device_colour
         get_prop(:DeviceColor)
       end
 
@@ -133,11 +140,15 @@ module DeviceAPI
 
       # Reboot the device
       def reboot
-        restart
+        IDeviceDiagnostics.reboot(serial)
       end
 
-      def restart
-        IDeviceDiagnostics.restart(serial)
+      def display_off
+        IDeviceDiagnostics.turn_off_display(serial)
+      end
+
+      def shutdown
+        IDeviceDiagnostics.shutdown(serial)
       end
 
       # Time
@@ -146,16 +157,12 @@ module DeviceAPI
         get_prop(:Uses24HourClock) == 'true'
       end
 
-      def clock_12_hour?
-        get_prop(:Uses24HourClock) == 'false'
-      end
-
       def timezone
         get_prop(:TimeZone)
       end
 
       def time
-        Time.at(get_prop(:TimeIntervalSince1970).to_f)
+        Time.at(get_prop(:TimeIntervalSince1970).to_f).to_s
       end
 
       # Network
@@ -213,24 +220,24 @@ module DeviceAPI
 
       private
 
-      def get_prop(key)
-        @props = IDevice.get_props(serial) if !@props || !@props[key]
-        @props[key]
-      end
+        def get_prop(key)
+          @props = IDevice.get_props(serial) if !@props || !@props[key]
+          @props[key]
+        end
 
-      def install_ipa(ipa)
-        IDeviceInstaller.install_ipa(
-          ipa: ipa,
-          serial: serial
-        )
-      end
+        def install_ipa(ipa)
+          IDeviceInstaller.install_ipa(
+            ipa: ipa,
+            serial: serial
+          )
+        end
 
-      def uninstall_package(package_name)
-        IDeviceInstaller.uninstall_package(
-          package: package_name,
-          serial: serial
-        )
-      end
+        def uninstall_package(package_name)
+          IDeviceInstaller.uninstall_package(
+            package: package_name,
+            serial: serial
+          )
+        end
     end
   end
 end
