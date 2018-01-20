@@ -20,7 +20,7 @@ RSpec.describe DeviceAPI::IOS::Device do
     end
 
     it 'does not override the qualifier with the serial' do
-      expect(described_class.create(qualifier: '12345', serial: '98765').qualifier).to eq '12345'
+      expect(described_class.create(qualifier: '12345', serial: '98765').qualifier).to eq('12345')
     end
   end
 end
