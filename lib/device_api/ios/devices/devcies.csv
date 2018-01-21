@@ -1,0 +1,70 @@
+Device Type,Product Name,Extra,ID
+x86_64,iOS Simulator,,
+iPhone11,iPhone,,
+iPhone12,iPhone 3G,,
+iPhone21,iPhone 3GS,,
+iPhone31,iPhone 4,GSM,
+iPhone33,iPhone 4,CDMA,
+iPhone41,iPhone 4S,,
+iPhone51,iPhone 5,,A1428
+iPhone52,iPhone 5,,A1429
+iPhone53,iPhone 5c,,A1456/A1532
+iPhone54,iPhone 5c,,A1507/A1516/A1529
+iPhone61,iPhone 5s,,A1433/A1453
+iPhone62,iPhone 5s,,A1457/A1518/A1530
+iPhone71,iPhone 6 Plus,,
+iPhone72,iPhone 6,,
+iPhone81,iPhone 6s,,
+iPhone82,iPhone 6s Plus,,
+iPhone84,iPhone SE,,
+iPhone91,iPhone 7,,A1660/A1779/A1780
+iPhone92,iPhone 7 Plus,,A1661/A1785/A1786
+iPhone93,iPhone 7,,A1778
+iPhone94,iPhone 7 Plus,,A1784
+iPhone101,iPhone 8,,A1863/A1906
+iPhone102,iPhone 8 Plus,,A1864/A1898
+iPhone103,iPhone X,,A1865/A1902
+iPhone104,iPhone 8,,A1905
+iPhone105,iPhone 8 Plus,,A1897
+iPhone106,iPhone X,,A1901
+iPad11,iPad,,
+iPad21,iPad 2,Wi-Fi,
+iPad22,iPad 2,GSM,
+iPad23,iPad 2,CDMA,
+iPad24,iPad 2,Wi-Fi,
+iPad25,iPad mini,Wi-Fi,
+iPad26,iPad mini,,A1454
+iPad27,iPad mini,,A1455
+iPad31,iPad 3rd gen,Wi-Fi,
+iPad32,iPad 3rd gen,3rd gen Wi-Fi+LTE Verizon,
+iPad33,iPad 3rd gen,3rd gen Wi-Fi+LTE AT&T,
+iPad34,iPad 4th Gen,4th gen Wi-Fi,
+iPad35,iPad 4th Gen,4th gen A1459,
+iPad36,iPad 4th Gen,4th gen A1460,
+iPad41,iPad Air,Wi-Fi,
+iPad42,iPad Air,Wi-Fi+LTE,
+iPad43,iPad Air,Rev,
+iPad44,iPad mini 2,Wi-Fi,
+iPad45,iPad mini 2,Wi-Fi+LTE,
+iPad46,iPad mini 2,Rev,
+iPad47,iPad mini 3,Wi-Fi,
+iPad48,iPad mini 3,,A1600
+iPad49,iPad mini 3,,A1601
+iPad51,iPad mini 4,Wi-Fi,
+iPad52,iPad mini 4,Wi-Fi+LTE,
+iPad53,iPad Air 2,Wi-Fi,
+iPad54,iPad Air 2,Wi-Fi+LTE,
+iPad63,iPad Pro 9.7 inch,Wi-Fi,
+iPad64,iPad Pro 9.7 inch,Wi-Fi+LTE,
+iPad67,iPad Pro 12.9 inch,Wi-Fi,
+iPad68,iPad Pro 12.9 inch,Wi-Fi+LTE,
+iPad611,iPad 9.7-Inch 5th Gen,Wi-Fi Only,
+iPad612,iPad 9.7-Inch 5th Gen,Wi-Fi/Cellular,
+iPad73,iPad Pro 10.5 inch,,A1701
+iPad74,iPad Pro 10.5 inch,,A1709
+iPod11,iPod touch 1st Gen,,
+iPod21,iPod touch 2nd Gen,,
+iPod31,iPod touch 3rd Gen,,
+iPod41,iPod touch 4th Gen,,
+iPod51,iPod touch 5th Gen,,
+iPod71,iPod touch 6th Gen,,

@@ -4,7 +4,7 @@ require 'device_api/ios/lib/idevice'
 require 'device_api/ios/lib/idevicename'
 require 'device_api/ios/lib/idevicescreenshot'
 require 'device_api/ios/lib/idevicediagnostics'
-require 'ios/devices'
+require 'device_api/ios/device_model'
 
 # DeviceAPI - an interface to allow for automation of devices
 module DeviceAPI
@@ -46,10 +46,10 @@ module DeviceAPI
         IDeviceName.set_name(serial, name)
       end
 
-      # Look up device model using the ios-devices gem - changing 'iPad4,7' to 'iPad mini 3'
+      # Look up device model using the 'iPad4,7' to 'iPad mini 3'
       # @return (String) human readable model and version (where applicable)
       def model
-        Ios::Devices.search(get_prop(:ProductType)).name
+        DeviceModel.search(get_prop(:ProductType), :name)
       end
 
       # Returns the devices iOS version number - i.e. 8.2
@@ -220,24 +220,24 @@ module DeviceAPI
 
       private
 
-        def get_prop(key)
-          @props = IDevice.get_props(serial) if !@props || !@props[key]
-          @props[key]
-        end
+      def get_prop(key)
+        @props = IDevice.get_props(serial) if !@props || !@props[key]
+        @props[key]
+      end
 
-        def install_ipa(ipa)
-          IDeviceInstaller.install_ipa(
-            ipa: ipa,
-            serial: serial
-          )
-        end
+      def install_ipa(ipa)
+        IDeviceInstaller.install_ipa(
+          ipa: ipa,
+          serial: serial
+        )
+      end
 
-        def uninstall_package(package_name)
-          IDeviceInstaller.uninstall_package(
-            package: package_name,
-            serial: serial
-          )
-        end
+      def uninstall_package(package_name)
+        IDeviceInstaller.uninstall_package(
+          package: package_name,
+          serial: serial
+        )
+      end
     end
   end
 end
