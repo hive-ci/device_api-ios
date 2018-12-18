@@ -21,6 +21,7 @@ module DeviceAPI
         @qualifier = options[:qualifier]
         @serial    = options[:serial] || options[:qualifier]
         @state     = options[:state]
+        @trusted   = options[:trusted]
       end
 
       # Mapping of device status - used to provide a consistent status across platforms
@@ -115,6 +116,7 @@ module DeviceAPI
         res = install_ipa(ipa)
 
         raise StandardError, res, caller unless res
+
         true
       end
 
@@ -125,6 +127,7 @@ module DeviceAPI
         res = uninstall_package(package_name)
 
         raise StandardError, res, caller unless res
+
         true
       end
 

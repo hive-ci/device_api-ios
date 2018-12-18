@@ -19,9 +19,12 @@ module DeviceAPI
     def self.devices
       devs = IDevice.devices
       devs.keys.map do |serial|
-        DeviceAPI::IOS::Device.new(qualifier: serial,
-                                   display: devs[serial],
-                                   state: 'ok')
+        DeviceAPI::IOS::Device.new(
+          qualifier: serial,
+          display: devs[serial],
+          state: 'ok',
+          trusted: IDevice.trusted?(serial)
+        )
       end
     end
 
@@ -30,7 +33,11 @@ module DeviceAPI
       if qualifier.to_s.empty?
         raise DeviceAPI::BadSerialString, 'Serial ID not provided'
       end
-      DeviceAPI::IOS::Device.new(qualifier: qualifier, state: 'device')
+
+      DeviceAPI::IOS::Device.new(
+        qualifier: qualifier,
+        state: 'device'
+      )
     end
   end
   # Serial error class

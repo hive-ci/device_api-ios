@@ -18,7 +18,7 @@ module DeviceAPI
 
         lines.each do |ln|
           if /[0-9a-zA-Z].*/.match(ln)
-            results[ln] = execute_with_timeout_and_retry("ideviceinfo -u #{ln} -k DeviceName").stdout.strip
+            results[ln] = execute_with_timeout_and_retry("ideviceinfo -u #{ln}").stdout.strip
           end
         end
         results
@@ -28,7 +28,7 @@ module DeviceAPI
       # @param device_id uuid of the device
       # @return true if the device returns information to ideviceinfo, otherwise false
       def self.trusted?(device_id)
-        result = execute("ideviceinfo -u '#{device_id}'")
+        result = execute("ideviceinfo -u #{device_id}")
 
         lines = result.stdout.split("\n")
         result.exit.zero? && !lines.empty? && !lines[0].match('Usage')
@@ -39,7 +39,7 @@ module DeviceAPI
       # @return (Hash) key value pair of properties
       def self.get_props(device_id, type = nil)
         type_info = deviceinfo_type(type)
-        result = execute("ideviceinfo -u '#{device_id}'#{type_info}")
+        result = execute("ideviceinfo -u #{device_id} #{type_info}")
 
         raise IDeviceCommandError, result.stderr if result.exit != 0
 
