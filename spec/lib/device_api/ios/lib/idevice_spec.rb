@@ -7,10 +7,10 @@ RSpec.describe DeviceAPI::IOS::IDevice do
       allow(Open3).to receive(:capture3).with('idevice_id -l')
                                         .and_return(["12345678\n23451234\n", '', STATUS_ZERO])
 
-      allow(Open3).to receive(:capture3).with('ideviceinfo -u 12345678 -k DeviceName')
+      allow(Open3).to receive(:capture3).with('ideviceinfo -u 12345678')
                                         .and_return(["Device-1\n", '', STATUS_ZERO])
 
-      allow(Open3).to receive(:capture3).with('ideviceinfo -u 23451234 -k DeviceName')
+      allow(Open3).to receive(:capture3).with('ideviceinfo -u 23451234')
                                         .and_return(["Device-2\n", '', STATUS_ZERO])
 
       expect(described_class.devices).to match(
@@ -27,7 +27,7 @@ RSpec.describe DeviceAPI::IOS::IDevice do
   end
 
   describe '#trusted?' do
-    trusted = "ideviceinfo -u '00000001'"
+    trusted = 'ideviceinfo -u 00000001'
 
     it 'reports a connected device as trusted' do
       output = <<-EOF
