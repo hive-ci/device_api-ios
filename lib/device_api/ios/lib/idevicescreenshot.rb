@@ -9,6 +9,7 @@ module DeviceAPI
       def self.capture(args)
         result = execute("idevicescreenshot #{args[:filename]} -u #{args[:device_id]}")
         raise IDeviceScreenshotError, result.stderr if result.exit != 0
+
         result.stdout
       end
     end

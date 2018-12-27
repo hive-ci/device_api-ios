@@ -21,6 +21,7 @@ module DeviceAPI
       def initialize(options = {})
         @qualifier = options[:qualifier]
         @serial    = options[:serial] || options[:qualifier]
+        @props     = options[:props]
         @state     = options[:state]
         @trusted   = options[:trusted]
       end
@@ -40,6 +41,10 @@ module DeviceAPI
       def name
         get_prop('name')
         # IDeviceName.name(serial)
+      end
+
+      def ecid
+        get_prop('ECID')
       end
 
       # Set device name
