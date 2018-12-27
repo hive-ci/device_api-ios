@@ -2,6 +2,7 @@
 
 require 'yaml'
 require 'device_api/ios/device'
+require 'device_api/ios/lib/cfgutil'
 require 'device_api/ios/lib/idevice'
 require 'device_api/ios/lib/ideviceinstaller'
 require 'device_api/ios/lib/idevicedebug'
@@ -17,13 +18,13 @@ module DeviceAPI
   module IOS
     # Returns an array of connected iOS devices
     def self.devices
-      devs = IDevice.devices
+      devs = CFGDevice.devices
       devs.keys.map do |serial|
         DeviceAPI::IOS::Device.new(
           qualifier: serial,
           display: devs[serial],
           state: 'ok',
-          trusted: IDevice.trusted?(serial)
+          trusted: devs[serial]['isPaired']
         )
       end
     end

@@ -1,5 +1,6 @@
 require 'device_api/device'
 require 'device_api/ios/device'
+require 'device_api/ios/lib/cfgutil'
 require 'device_api/ios/lib/idevice'
 require 'device_api/ios/lib/idevicename'
 require 'device_api/ios/lib/idevicescreenshot'
@@ -28,16 +29,17 @@ module DeviceAPI
       # @return (String) common status string
       def status
         {
-          'device'    => :ok,
+          'device' => :ok,
           'no device' => :dead,
-          'offline'   => :offline
+          'offline' => :offline
         }[@state]
       end
 
       # Look up device name - i.e. Bob's iPhone
       # @return (String) iOS device name
       def name
-        IDeviceName.name(serial)
+        get_prop('name')
+        # IDeviceName.name(serial)
       end
 
       # Set device name
@@ -50,31 +52,35 @@ module DeviceAPI
       # Look up device model using the 'iPad4,7' to 'iPad mini 3'
       # @return (String) human readable model and version (where applicable)
       def model
-        DeviceModel.search(get_prop(:ProductType), :name)
+        DeviceModel.search(get_prop('deviceType'), :name)
+        # DeviceModel.search(get_prop(:ProductType), :name)
       end
 
       # Returns the devices iOS version number - i.e. 8.2
       # @return (String) iOS version number
       def version
-        get_prop(:ProductVersion)
+        get_prop('firmwareVersion')
+        # get_prop(:ProductVersion)
       end
 
       # Return the device class - i.e. iPad, iPhone, etc
       # @return (String) iOS device class
       def device_class
-        get_prop(:DeviceClass)
+        get_prop('deviceClass')
+        # get_prop(:DeviceClass)
       end
 
       # Return the device platform
       # @return (String) platform type
       def architecture
-        get_prop(:CPUArchitecture)
+        get_prop(:CPUArchitecture) # not avaliable in cfgutil
       end
 
       # Return the device colour
       # @return (String) hex colour value
       def device_colour
-        get_prop(:DeviceColor)
+        get_prop('enclosureColor')
+        # get_prop(:DeviceColor)
       end
 
       # Capture screenshot on device
@@ -86,13 +92,21 @@ module DeviceAPI
       # Has the 'Trust this device' dialog been accepted?
       # @return (Boolean) true if the device is trusted, otherwise false
       def trusted?
-        IDevice.trusted?(serial)
+        get_prop('isPaired')
+        # IDevice.trusted?(serial)
+      end
+
+      # Check if the device is supervised
+      # @return (Boolean) true if the device is supervised
+      def supervised?
+        get_prop('isSupervised')
       end
 
       # Check if the device is password protected
       # @return (Boolean) true if the device is password protected
       def password_protected?
-        get_prop(:PasswordProtected) == 'true'
+        get_prop('passcodeProtected')
+        # get_prop(:PasswordProtected) == 'true'
       end
 
       # Get the IP Address from the device
@@ -104,7 +118,8 @@ module DeviceAPI
       # Get the Wifi Mac address for the current device
       # @return [String] Mac address of current device
       def wifi_mac_address
-        get_prop(:WiFiAddress)
+        get_prop('wifiAddress')
+        # get_prop(:WiFiAddress)
       end
 
       # Install a specified IPA
@@ -173,7 +188,8 @@ module DeviceAPI
       # Get the IMEI number of the device
       # @return (String) IMEI number of current device
       def imei
-        get_prop(:InternationalMobileEquipmentIdentity)
+        get_prop('IMEI')
+        # get_prop(:InternationalMobileEquipmentIdentity)
       end
 
       def mobileNetwork
@@ -212,19 +228,25 @@ module DeviceAPI
 
       # Battery
 
+      def charging?
+        get_prop('batteryIsCharging')
+      end
+
       def battery_info
-        DeviceAPI::IOS::Plugin::Battery.new(qualifier: qualifier)
+        get_prop('batteryCurrentCapacity')
+        # DeviceAPI::IOS::Plugin::Battery.new(qualifier: qualifier)
       end
 
       # Disk
       def disk_info
-        DeviceAPI::IOS::Plugin::Disk.new(qualifier: qualifier)
+        get_prop('freeDiskSpace')
+        # DeviceAPI::IOS::Plugin::Disk.new(qualifier: qualifier)
       end
 
       private
 
       def get_prop(key)
-        @props = IDevice.get_props(serial) if !@props || !@props[key]
+        @props = CFGDevice.get_props(serial) if !@props || !@props[key]
         @props[key]
       end
 
