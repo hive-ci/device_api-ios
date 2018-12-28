@@ -39,6 +39,75 @@ module DeviceAPI
       def self.trusted?(device_id)
         get_props(device_id)['isPaired']
       end
+
+      # Installs a given IPA to the specified device
+      # @param [Hash] options options for installing the app
+      # @option options [String] :ipa path to the IPA to install
+      # @option options [String] :serial serial of the target device
+      # @return [Boolean] true if successful, otherwise false
+      def self.install_ipa(options = {})
+        options[:action] = :install
+        change_package(options)
+      end
+
+      # Uninstalls a specified package from a device
+      # @param [Hash] options options for uninstalling the app
+      # @option options [String] :package bundle ID of the package to be uninstalled
+      # @option options [String] :serial serial of the target device
+      # @return [Boolean] true if successful, otherwise false
+      def self.uninstall_package(options = {})
+        options[:action] = :uninstall
+        change_package(options)
+      end
+
+      def self.fetch_ecid(serial)
+        get_props(serial)['ECID']
+      end
+
+      # Lists packages installed on the specified device
+      # @param [String] serial serial of the target device
+      # @return [Hash] hash containing installed packages
+      def self.list_installed_packages(serial)
+        list_of_packages = get_props(serial)['installedApps']
+
+        packages = {}
+
+        list_of_packages.each do |item|
+          packages[item['itunesName']] = {
+            package_name: item['bundleIdentifier'],
+            itunes_name: item['itunesName'],
+            display_name: item['displayName'],
+            version: item['bundleVersion']
+          }
+        end
+        packages
+      end
+
+      def self.change_package(options = {})
+        package = options[:package]
+        ipa     = options[:ipa]
+        serial  = fetch_ecid(options[:serial])
+        action  = options[:action]
+
+        command = nil
+        if action == :install
+          command = "cfgutil -e #{serial} install-app '#{ipa}'"
+        elsif action == :uninstall
+          command = "cfgutil -e #{serial} remove-app '#{package}'"
+        end
+
+        raise CFGDeviceCommandError, 'No action specified' if command.nil?
+
+        result = execute(command)
+
+        raise CFGDeviceCommandError, result.stderr if result.exit != 0
+
+        lines = result.stdout.split("\n").map { |line| line.delete('-').strip }
+
+        return true if lines.last.match('succeeded')
+
+        false
+      end
     end
 
     # Exception class to handle exceptions related to IDevice Class

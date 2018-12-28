@@ -158,7 +158,7 @@ module DeviceAPI
       end
 
       def list_installed_packages
-        IDeviceInstaller.list_installed_packages(serial)
+        CFGDevice.list_installed_packages(serial)
       end
 
       # Reboot the device
@@ -256,14 +256,14 @@ module DeviceAPI
       end
 
       def install_ipa(ipa)
-        IDeviceInstaller.install_ipa(
+        CFGDevice.install_ipa(
           ipa: ipa,
           serial: serial
         )
       end
 
       def uninstall_package(package_name)
-        IDeviceInstaller.uninstall_package(
+        CFGDevice.uninstall_package(
           package: package_name,
           serial: serial
         )
